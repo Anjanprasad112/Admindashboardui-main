@@ -22,14 +22,15 @@ const Accounts = () => {
     // }
 
   const [acc, setAcc] = useState([]);
+  
 
   useEffect(() => {
     axios
-    .get('http://127.0.0.1:8000/accounts')
+    .get('http://127.0.0.1:8000/accounts/')
     //   .then((response) => response.json())
       .then((response) => {
         setAcc(response.data);
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch((error) => {
         console.error(error);

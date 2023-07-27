@@ -57,7 +57,7 @@ const Cases = () => {
                 className="border-2 border-gray-300"
               >
                 <td>
-                  <Link to={`/order/${order.dispatch_entry_id}`}>{order.dispatch_entry_id}</Link>
+                  <Link to={`/cases/${order.dispatch_entry_id}`}>{order.dispatch_entry_id}</Link>
                 </td>
                 <td>{order.customer_id.name}</td>
                 <td>{order.partner_service_id}</td>
