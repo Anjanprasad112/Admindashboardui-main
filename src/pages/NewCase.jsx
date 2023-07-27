@@ -1,733 +1,537 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+function NewCase() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [make, setMake] = useState("");
+  const [vehicle_class, setVehicle_class] = useState("");
+  const [vehicle_type, setVehicle_type] = useState("");
+  const [uniqueNames, setUniqueNames] = useState([]);
+  const [uniqueNamesone, setUniqueNamesone] = useState([]);
+  const [uniqueNamestwo, setUniqueNamestwo] = useState([]);
+  const [uniqueNamesthree, setUniqueNamesthree] = useState([]);
+  const [breakdown_issue, setBreakdownIssue] = useState("");
+  const [ratesid, setRatesid] = useState([]);
+  const [price, setPrice] = useState([]);
+  const [dropoff_location, setDrop_location] = useState([]);
+  const [pickup_location, setPickup_location] = useState([]);
+  const [license_plate, setLicense_plate] = useState([]);
+  const [partner_service_id, setPartner_service_id] = useState([]);
 
-// const NewCase = () => {
-//   const [is_scheduled, setIs_scheduled] = useState(false);
-//   const [caseid, setCase] = useState('');
-//   const [partner_caseid, setPartner_caseid] = useState('');
-//   const [partner_service_id, setPartner_service_id] = useState('');
-//   const [account_id, setAccount_id] = useState('');
-//   const [source, setSource] = useState('');
-//   const [service_type_id, setService_type_id] = useState('');
-//   const [reason_id, setReason_id] = useState('');
-//   const [customer_id, setCustomer_id] = useState('');
-//   const [asset_id, setAsset_id] = useState('');
-//   const [dispatch_status_id, setDispatch_status_id] = useState(''); 
-//   const [repair_status, setRepair_status] = useState('');
-//   const [csr_id, setCsr_id] = useState('');
-//   const [company_id, setCompany_id] = useState('');
-//   const [scheduled_date, setScheduled_date] = useState('');
-//   const [invoice_id, setInvoice_id] = useState('');
-//   const [payment_id, setPayment_id] = useState('');
-//   const [payment_status, setPayment_status] = useState('');
-//   const [pickup_location, setPickup_location] = useState('');
-//   const [dropoff_location, setDropoff_location] = useState('');
-//   const [eta, setEta] = useState('');
-//   const [ata, setAta] = useState('');
+  const account_id = 1;
+  const account_name = "A2Z ASSIST";
+  const account_company_id = 1001;
 
+  // const [customers, setCustomers] = useState([]);
+  // const [vehicleRegNumber, setVehicleRegNumber] = useState("");
+  // const [breakdownIssue, setBreakdownIssue] = useState("");
+  // const [location, setLocation] = useState("");
+  const [whatsapp_number, setWhatsapp_number] = useState("");
+  // const [assistanceTime, setAssistanceTime] = useState('');
+  // const [comments, setComments] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const navigate = useNavigate();
 
-
-//   const [uniacc, setUniacc] = useState([]);
-//   const [services, setServices] = useState([]);
-//   const [reasons, setReasons] = useState([]);
-
-
-//   const handleCheckboxChange = (event) => {
-//     setIs_scheduled(event.target.checked);
-//   };
-
-//   const data = {
-//     caseid,
-//     partner_caseid,
-//     partner_service_id,
-//     account_id,
-//     source,
-//     service_type_id,
-//     reason_id,
-//     customer_id,
-//     asset_id,
-//     dispatch_status_id,
-//     repair_status,
-//     csr_id,
-//     company_id,
-//     scheduled_date,
-//     is_scheduled,
-//     invoice_id,
-//     payment_id,
-//     payment_status,
-//     pickup_location,
-//     dropoff_location,
-//     eta,
-//     ata,
-//   };
-
-//   useEffect(() => {
-//     axios
-//     .get('http://127.0.0.1:8000/accounts/')
-//     .then((response) => 
-//     // console.log(response.data)
-//     setUniacc(response.data.map((acc) => 
-//     ({
-
-//       value:  acc.account_id,
-//     })
-
-//     )))
-//     .catch((error) => {
-//         console.error(error);
-//     }
-//     );
-
-//     //service types
-//     axios
-//     .get('http://127.0.0.1:8000/service-types/')
-//     .then((response) =>
-//     setServices(response.data.map((acc) => 
-//     ({
-//       value:acc.service_type_id,
-//     })))
-//     )
-
-
-//     axios
-//     .get('http://127.0.0.1:8000/reasons/')
-//     .then((response)=>
-//     setReasons(response.data.map((acc) => 
-//     ({
-//       value: acc.reason_id
-//     })
-//     ))
-//     )
-   
-//   }, [])
-
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     if(
-//       !caseid ||
-//       !partner_caseid ||
-//       !partner_service_id ||
-//       !account_id ||
-//       !source ||
-//       !service_type_id ||
-//       !reason_id ||
-//       !customer_id ||
-//       !asset_id ||
-//       !dispatch_status_id ||
-//       !repair_status ||
-//       !csr_id ||
-//       !company_id ||
-//       !scheduled_date ||
-//       !invoice_id ||
-//       !payment_id ||
-//       !payment_status ||
-//       !pickup_location ||
-//       !dropoff_location ||
-//       !eta ||
-//       !ata
-//     ) {
-//       alert('Please fill all the input fields');
-//       return;
-//     }
-    
-//     axios.post('http://127.0.0.1:8000/dispatch-entry-assets/', data)
-//       .then((response) => {
-//         console.log(response);
-//         alert('New case created successfully');
-//       })
-//       .catch((error) => {
-//         console.error('Error submitting form:', error); 
-//       });
-//   };
-//   console.log(uniacc)
-
-//   return (
-//     <div className="container mx-auto px-auto">
-//       <h1 className='text-center text-3xl font-bold p-2'>CREATE NEW CASE</h1>
-//     <form onSubmit={handleSubmit} className="mx-auto px-auto">
-//       <div className='flex flex-row items-center justify-center'>
-//       <div className="m-2 mx-6 w-1/4 inline-block">
-//         <label htmlFor="caseid" className=" text-gray-700 font-bold mb-2">
-//           Caseid fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="caseid"
-//           value={caseid}
-//           onChange={(e)=>setCase(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter Case"
-//         />
-//       </div>
-
-
-//       <div className="m-2 mx-6 w-1/4 inline-block">
-//         <label htmlFor="partner_caseid" className=" text-gray-700 font-bold mb-2">
-//         partner_caseid:
-//         </label>
-//         <input
-//           type="text"
-//           id="partner_caseid"
-//           value={partner_caseid}
-//           onChange={(e)=>setPartner_caseid(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter partner_caseid"
-//         />
-//       </div>
-//       <div className="m-2 mx-6 w-1/4 inline-block">
-//         <label htmlFor="partner_service_id" className=" text-gray-700 font-bold mb-2">
-//         partner_service_id:
-//         </label>
-//         <input
-//           type="text"
-//           id="partner_service_id"
-//           value={partner_service_id}
-//           onChange={(e)=>setPartner_service_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter partner_service_id"
-//         />
-//       </div>
-//       </div>
-//       <div className='flex items-center justify-center'>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="account_id" className=" text-gray-700 font-bold mb-2">
-//         account_id:
-//         </label>
-//         <select
-//           type="text"
-//           id="account_id"
-//           value={account_id}
-//           onChange={(e)=>setAccount_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter account_id"
-//         >
-//          <option value="">select Account_Id</option>
-//             {uniacc.map((acc) => (
-              
-//               <option key={acc.value} value={acc.value}>
-//                 {acc.value}
-//                 </option>
-//             ))}
-         
-//         </select>
-//       </div>
-
-
-
-//       {/* <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="source" className="block text-gray-700 font-bold mb-2">
-//           source:
-//         </label>
-//         <input
-//           type="text"
-//           id="source"
-//           value={source}
-//           onChange={(e)=>setSource(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter source"
-//         />
-//       </div> */}
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="service_type_id" className=" text-gray-700 font-bold mb-2">
-//         service_type_id:
-//         </label>
-//         <select
-//           type="text"
-//           id="service_type_id"
-//           value={service_type_id}
-//           onChange={(e)=>setService_type_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter service_type_id"
-//         >
-//           <option value="">select service_type_id</option>
-//           {
-//             services.map((acc) => (
-//               <option key={acc.value} value={acc.value}>
-//                 {acc.value}
-//                 </option>
-//             ))
-//           }
-//           </select>
-//       </div>
-//       </div>
-//       <div className='flex items-center justify-center'>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="reason_id" className=" text-gray-700 font-bold mb-2">
-//         reason_id:
-//         </label>
-//         <select
-//           type="text"
-//           id="reason_id"
-//           value={reason_id}
-//           onChange={(e)=>setReason_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter reason_id"
-//         >
-//           <option>select Reason</option>
-//           {
-//             reasons.map((acc) => (
-//               <option key={acc.value} value={acc.value}>
-//                 {acc.value}
-//                 </option>
-//             ))
-//           }
-          
-//           </select>
-//       </div>
-//       {/* <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="customer_id" className=" text-gray-700 font-bold mb-2">
-//         customer_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="customer_id"
-//           value={customer_id}
-//           onChange={(e)=>setCustomer_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter customer_id"
-//         />
-//       </div> */}
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="asset_id" className=" text-gray-700 font-bold mb-2">
-//         asset_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="asset_id"
-//           value={asset_id}
-//           onChange={(e)=>setAsset_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter asset_id"
-//         />
-//       </div>
-//       </div>
-//       <div className="flex items-center justify-center">
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="dispatch_status_id" className=" text-gray-700 font-bold mb-2">
-//         dispatch_status_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="dispatch_status_id"
-//           value={dispatch_status_id}
-//           onChange={(e)=>setDispatch_status_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter dispatch_status_id"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="repair_status" className=" text-gray-700 font-bold mb-2">
-//         repair_status:
-//         </label>
-//         <input
-//           type="text"
-//           id="repair_status"
-//           value={repair_status}
-//           onChange={(e)=>setRepair_status(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter repair_status"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="csr_id" className=" text-gray-700 font-bold mb-2">
-//         csr_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="csr_id"
-//           value={csr_id}
-//           onChange={(e)=>setCsr_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter csr_id"
-//         />
-//       </div>
-//       </div>
-//       <div className='flex items-center justify-center'>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="company_id" className=" text-gray-700 font-bold mb-2">
-//         company_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="company_id"
-//           value={company_id}
-//           onChange={(e)=>setCompany_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter company_id"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="scheduled_date" className=" text-gray-700 font-bold mb-2">
-//         scheduled_date :
-//         </label>
-//         <input
-//           type="datetime-local"
-//           id="scheduled_date"
-//           value={scheduled_date}
-//           onChange={(e)=>setScheduled_date(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter scheduled_date"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="is_scheduled" className=" text-gray-700 font-bold mb-2">
-//         is_scheduled :
-//         </label>
-//         <input
-//             type="checkbox"
-//             name="is_scheduled"
-//             id="is_scheduled"
-//             checked={is_scheduled}
-//             onChange={handleCheckboxChange}
-//             className="form-checkbox h-5 w-5 text-indigo-600"
-//           />
-//       </div>
-//       </div>
-//       {/* <div className='flex items-center justify-center'>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="invoice_id" className=" text-gray-700 font-bold mb-2">
-//         invoice_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="invoice_id"
-//           value={invoice_id}
-//           onChange={(e)=>setInvoice_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter dispatch_status_id"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="payment_id" className="block text-gray-700 font-bold mb-2">
-//         payment_id fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="payment_id"
-//           value={payment_id}
-//           onChange={(e)=>setPayment_id(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter payment_id"
-//         />
-//       </div>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="payment_status" className=" text-gray-700 font-bold mb-2">
-//         payment_status fetch:
-//         </label>
-//         <input
-//           type="text"
-//           id="payment_status"
-//           value={payment_status}
-//           onChange={(e)=>setPayment_status(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter payment_status"
-//         />
-//       </div>
-//       </div> */}
-//       <div className='flex items-center justify-center'>
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="pickup_location" className=" text-gray-700 font-bold mb-2">
-//         pickup_location:
-//         </label>
-//         <input
-//           type="text"
-//           id="pickup_location"
-//           value={pickup_location}
-//           onChange={(e)=>setPickup_location(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter pickup_location"
-//         />
-//       </div>
-
-
-      
-
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="dropoff_location" className=" text-gray-700 font-bold mb-2">
-//         dropoff_location:
-//         </label>
-//         <input
-//           type="text"
-//           id="dropoff_location"
-//           value={dropoff_location}
-//           onChange={(e)=>setDropoff_location(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter dropoff_location"
-//         />
-//       </div>
-
-
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="eta" className=" text-gray-700 font-bold mb-2">
-//         eta fetch:
-//         </label>
-//         <input
-//           type="datetime-local"
-//           name="eta"
-//           id="eta"
-//           value={eta}
-//           onChange={(e)=>setEta(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter eta"
-//         />
-//       </div>
-//       </div>
-//       <div className='flex items-center justify-center'>
-
-//       <div className="m-2 w-1/4 mx-6 inline-block">
-//         <label htmlFor="ata" className=" text-gray-700 font-bold mb-2">
-//         ata fetch:
-//         </label>
-//         <input
-//           type="datetime-local"
-//           name="ata"
-//           id="ata"
-//           value={ata}
-//           onChange={(e)=>setAta(e.target.value)}
-//           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//           placeholder="Enter ata"
-//           />
-//       </div>
-//           </div>
-    
-    
-
-
-
-//       <div className="m-4 flex justify-center items-center">
-//         <button
-//           type="submit"
-//           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-//         >
-//           Submit
-//         </button>
-//       </div>
-//     </form>
-//   </div>
-//   );
-// };
-
-// export default NewCase;
-
-
-import React, { useState } from 'react';
-import axios from 'axios';
-
-const NewCase = () => {
-  const [formData, setFormData] = useState({
-    partner_service_id: '',
-    account_id: '',
-    service_type_id: '',
-    reason_id: '',
-    customer_id: '',
-    pickup_location: '',
-    dropoff_location: '',
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+  const data1 = {
+    breakdown_issue,
+    make,
+    account_company_id,
+    account_id,
+    account_name,
   };
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/vehicles/")
+      .then((response) => {
+        // console.log(response.data);
+        const flattenedData = response.data.flat();
+        const uniqueNamesSet = new Set(
+          flattenedData.map((item) => item.vehicle_class)
+        );
+        const uniqueNamesArray = [...uniqueNamesSet];
+        setUniqueNames(uniqueNamesArray);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      // Make a POST request to your Django API endpoint for creating DispatchEntry
-      await axios.post('http://127.0.0.1:8000/dispatch-entries/', formData); // Replace with your Django API endpoint URL
-      // If successful, you can redirect or show a success message
-      alert('Data submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting data:', error);
-      // Handle errors appropriately (e.g., show an error message)
+        const uniqueNamesSetone = new Set(
+          flattenedData.map((item) => item.make)
+        );
+        const uniqueNamesArrayone = [...uniqueNamesSetone];
+        setUniqueNamesone(uniqueNamesArrayone);
+
+        const uniqueNamesSettwo = new Set(
+          flattenedData.map((item) => item.vehicle_type)
+        );
+        const uniqueNamesArraytwo = [...uniqueNamesSettwo];
+        setUniqueNamestwo(uniqueNamesArraytwo);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get("http://127.0.0.1:8000/rate-items/")
+      .then((response) => {
+        // console.log(typeof(response.data));
+        const flattenedDataone = response.data.flat();
+        // console.log(flattenedDataone[1].premium_2w)
+        const uniqueNamesSetthree = new Set(
+          flattenedDataone.map((item) => item.name)
+        );
+        const uniqueNamesArraythree = [...uniqueNamesSetthree];
+        setUniqueNamesthree(uniqueNamesArraythree);
+        // for (let i = 0; i < flattenedDataone.length; i++) {
+        //   if(account_id===flattenedDataone[i].name){
+        //     console.log(flattenedDataone[i].rate_item_id)
+        //     setRatesid(flattenedDataone[i].rate_item_id)
+        //     setPrice(flattenedDataone[13].budget_2w)
+        //   }
+        // }
+        // console.log(ratesid)
+        // console.log(flattenedDataone[ratesid])
+        // setPrice(flattenedDataone[ratesid].a)
+        // const a='premium_2w'
+        // console.log(flattenedDataone[ratesid].premium_2w)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   fetch("http://127.0.0.1:8000/default-rate/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data1),
+  //   })
+  //     .then(
+  //       (response) => {
+  //         console.log(response.json());
+  //         // setPrice(response)
+  //       }
+  //       // setPrice(response.data.price)
+  //     )
+
+  //     .catch((error) => console.log(error));
+  // }, [make, breakdown_issue]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !name ||
+      !phone ||
+      !email ||
+      !whatsapp_number ||
+      !make ||
+      !breakdown_issue ||
+      !pickup_location ||
+      !license_plate
+    ) {
+      alert("Please fill in all required fields");
+      return;
     }
+
+    // console.log(data);
+    const data = {
+      name,
+      phone,
+      email,
+      whatsapp_number,
+      breakdown_issue,
+      make,
+      pickup_location,
+      license_plate,
+      partner_service_id,
+    };
+
+    // const data2={
+    //   asset_id,
+    //   partner_service_id,
+    //   account_id,
+    //   service_type_id,
+    //   reason_id,
+    //   customer_id,
+    //   dispatch_status_id,
+    //   csr_id,
+    //   company_id,
+    //   pickup_location,
+    //   dropoff_location
+    // }
+
+    await fetch("http://127.0.0.1:8000/web-portal/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => console.log(response))
+      .then(() => {
+        setName("");
+        setPhone("");
+        setEmail("");
+        setWhatsapp_number("");
+        // setBreakdown_issue("");
+        setMake("");
+        setPickup_location("");
+        setLicense_plate("");
+        setShowSuccessPopup(true);
+        
+      })
+      .catch((error) => console.log(error));
+
+    // await axios
+    // .get("http://127.0.0.1:8000/customers/")
+    // .then((response) => {
+    //   // console.log(response.data);
+    //   setCustomer_id(response.data.customer_id);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+
+    // await fetch("http://127.0.0.1:8000/dispatch-entry-assets/", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data1),
+    // })
+
+    // .then((response) =>
+    // console.log(response))
+    // // response.json())
+    // .then(() => {
+    //   setMake("");
+    //   setVehicle_class("");
+    //   setVehicle_type("");
+    //   setLicense_plate("");
+    // })
+    // .catch((error) => console.log(error));
+
+    // await axios
+    // .get("http://127.0.0.1:8000/dispatch-entry-assets/")
+    // .then((response) => {
+    //   // console.log(response.data);
+    //   setAsset_id(response.data.asset_id);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+
+    // // partner_service_id,
+    // // account_id,
+    // // reason_id,
+    // // customer_id,
+    // // dispatch_status_id,
+    // // pickup_location,
+    // // dropoff_location
+    // // await axios
+    // // .post("http://127.0.0.1:8000/dispatch-entries/",
+    // // {
+    // //   partner_service_id,
+    // //   account_id,
+    // //   reason_id,
+    // //   customer_id,
+    // //   dispatch_status_id,
+    // //   pickup_location,
+    // //   dropoff_location
+    // // })
+    // // .then((response) => {
+    // //   console.log(response.data);
+    // // })
+    // // .catch((error) => {
+    // //   console.log(error);
+    // // });
+
+    // await fetch("http://127.0.0.1:8000/dispatch-entries/", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data2),
+    // })
+
+    // .then((response) =>
+    // console.log(response))
+    // // response.json())
+    // .then(() => {
+    //   setReason_id("");
+    //   setPickup_location("");
+    //   setDrop_location("");
+    // })
+    // .catch((error) => console.log(error));
+
+    // setShowSuccessPopup(true);
+    // navigate("/end");
   };
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Create New Case</h1>
+    <div className="container mx-auto px-4 py-8">
+      {/* <div className="text-2xl text-red-500 text-center font-semibold tracking-widest">
+        A2Z ASSIST
+      </div> */}
+      {/* <h2 className="text-2xl font-bold mb-4">Create New Ticket</h2> */}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="case_id" className="block text-sm font-medium text-gray-700">
-            Case ID
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="name"
+          >
+            Name
           </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="name"
             type="text"
-            name="case_id"
-            id="case_id"
-            value={formData.case_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Case ID"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
+            Email Address
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="email"
+            type="email"
+            placeholder="Enter your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="phone"
+          >
+            Contact Number
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phone"
+            type="tel"
+            placeholder="Enter your contact number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="whatsapp_number"
+          >
+            Whatsapp Number
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="whatsapp_number"
+            type="tel"
+            placeholder="Enter your whatsapp number"
+            value={whatsapp_number}
+            onChange={(e) => setWhatsapp_number(e.target.value)}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="partner_service_id" className="block text-sm font-medium text-gray-700">
-            Partner Service ID
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="partner_service_id"
+          >
+            Partner Service
           </label>
           <input
-            type="text"
-            name="partner_service_id"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="partner_service_id"
-            value={formData.partner_service_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Partner Service ID"
+            type="number"
+            placeholder="Enter your partner_service_id"
+            value={partner_service_id}
+            onChange={(e) => setPartner_service_id(e.target.value)}
           />
         </div>
+
         <div className="mb-4">
-          <label htmlFor="account_id" className="block text-sm font-medium text-gray-700">
-            Account ID
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="breakdown_issue"
+          >
+            Breakdown Issue
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="breakdown_issue"
+            placeholder="Select Vehicle Class"
+            value={breakdown_issue}
+            onChange={(e) => setBreakdownIssue(e.target.value)}
+          >
+            <option value="">Select Breakdown Issue</option>
+            {uniqueNamesthree.map((name, index) => (
+              <option key={index}>{name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="make"
+          >
+            Vehicle Make
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="make"
+            placeholder="Select Vehicle make"
+            value={make}
+            onChange={(e) => setMake(e.target.value)}
+          >
+            <option value="">Select Vehicle Make</option>
+            {uniqueNamesone.map((name, index) => (
+              <option key={index}>{name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="vehicle_class"
+          >
+            Vehicle Class
+          </label>
+          <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="vehicle_class"
+            placeholder="Select Vehicle Class"
+            value={vehicle_class}
+            onChange={(e) => setVehicle_class(e.target.value)}
+          >
+            <option value="">Select Vehicle Class</option>
+           {uniqueNames.map((name, index) => (
+          <option key={index}>{name}</option>
+        ))}
+            
+          </select>
+        </div>
+
+
+       
+
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="vehicle_type"
+          >
+            Vehicle Type
+          </label>
+           <select
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="vehicle_type"
+            type="number"
+            placeholder="Select Vehicle type"
+            value={vehicle_type}
+            onChange={(e) => setVehicle_type(e.target.value)}
+          >
+            <option value="">Select Vehicle Type</option>
+           {uniqueNamestwo.map((name, index) => (
+          <option key={index}>{name}</option>
+        ))}
+            
+          </select>
+        </div> */}
+
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="license_plate"
+          >
+            License Plate
           </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="license_plate"
             type="text"
-            name="account_id"
-            id="account_id"
-            value={formData.account_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Account ID"
+            placeholder="Enter License Plate Number"
+            value={license_plate}
+            onChange={(e) => setLicense_plate(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="service_type_id" className="block text-sm font-medium text-gray-700">
-            Service Type ID
+
+        {/* <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="vehicle_type"
+          >
+            pickup location
           </label>
-          <input
+           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="vehicle_type"
             type="text"
-            name="service_type_id"
-            id="service_type_id"
-            value={formData.service_type_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Service Type ID"
-          />
-        </div>
+            placeholder="Select Vehicle type"
+            value={dropoff_location}
+            onChange={(e) => setDrop_location(e.target.value)}
+         />
+            
+        </div> */}
+
         <div className="mb-4">
-          <label htmlFor="reason_id" className="block text-sm font-medium text-gray-700">
-            Reason ID
-          </label>
-          <input
-            type="text"
-            name="reason_id"
-            id="reason_id"
-            value={formData.reason_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Reason ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="customer_id" className="block text-sm font-medium text-gray-700">
-            Customer ID
-          </label>
-          <input
-            type="text"
-            name="customer_id"
-            id="customer_id"
-            value={formData.customer_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Customer ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="asset_id" className="block text-sm font-medium text-gray-700">
-            Asset ID
-          </label>
-          <input
-            type="text"
-            name="asset_id"
-            id="asset_id"
-            value={formData.asset_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Asset ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="dispatch_status_id" className="block text-sm font-medium text-gray-700">
-            Dispatch Status ID
-          </label>
-          <input
-            type="text"
-            name="dispatch_status_id"
-            id="dispatch_status_id"
-            value={formData.dispatch_status_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Dispatch Status ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="csr_id" className="block text-sm font-medium text-gray-700">
-            CSR ID
-          </label>
-          <input
-            type="text"
-            name="csr_id"
-            id="csr_id"
-            value={formData.csr_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter CSR ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="company_id" className="block text-sm font-medium text-gray-700">
-            Company ID
-          </label>
-          <input
-            type="text"
-            name="company_id"
-            id="company_id"
-            value={formData.company_id}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Company ID"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="pickup_location" className="block text-sm font-medium text-gray-700">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="pickup_location"
+          >
             Pickup Location
           </label>
           <input
-            type="text"
-            name="pickup_location"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="pickup_location"
-            value={formData.pickup_location}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Pickup Location"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="dropoff_location" className="block text-sm font-medium text-gray-700">
-            Dropoff Location
-          </label>
-          <input
             type="text"
-            name="dropoff_location"
-            id="dropoff_location"
-            value={formData.dropoff_location}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter Dropoff Location"
+            placeholder="Enter pickup location"
+            value={pickup_location}
+            onChange={(e) => setPickup_location(e.target.value)}
           />
         </div>
-        <div className="mt-4">
-          <button
-            type="submit"
-            className="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-opacity-50 rounded-md text-white font-medium"
-          >
-            Submit
-          </button>
-        </div>
+
+        {/* <div className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2">
+          Approx service fee: {price}
+        </div> */}
+
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Submit
+        </button>
       </form>
+      {showSuccessPopup && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-8 rounded">
+            <p className="text-lg font-bold mb-4">
+              New Task Created Successfully
+            </p>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => setShowSuccessPopup(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default NewCase;
