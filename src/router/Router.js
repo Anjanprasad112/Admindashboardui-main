@@ -14,15 +14,34 @@ import AddAccount from '../pages/AddAccount'
 import AccountDetails from '../pages/AccountDetails'
 import Settings from '../pages/Settings'
 import CaseDetails from '../pages/CaseDetails'
+import ProtectedRoute from '../pages/ProtectedRoute';
+
 
 
 
 
 const Router = () => {
+  const isAuthenticated = !!localStorage.getItem('jwtToken'); 
     return (
       <div>
         <BrowserRouter>
-          <Routes>
+        {/* <Routes>
+          <Route path="/" element={<App />}>
+            {isAuthenticated&&<Route path="/dashboard" element={<Main />} />}
+            {!isAuthenticated && <Route index path="/" element={<Login />} />}
+            {!isAuthenticated && <Route index path="/register" element={<Register />} />}
+
+            {isAuthenticated && <ProtectedRoute path="/accounts" component={<Accounts />} />}
+            {isAuthenticated && <ProtectedRoute path="/cases/:dispatch_entry_id" component={<CaseDetails />} />}
+            {isAuthenticated && <ProtectedRoute path="/accounts/:account_id" component={<AccountDetails />} />}
+            {isAuthenticated && <ProtectedRoute path="/settings" component={<Settings />} />}
+            {isAuthenticated && <ProtectedRoute path="/addaccount" component={<AddAccount />} />}
+            {isAuthenticated && <ProtectedRoute path="/maps/:mapsid" component={<ShowMaps />} />}
+    
+            <Route path="*" element={<Error />} />
+          </Route>
+        </Routes> */}
+        <Routes>
             <Route path="/" element={<App />}>
               <Route path="/" element={<Main />} />
               <Route index path="/login" element={<Login />} />
@@ -44,7 +63,7 @@ const Router = () => {
               <Route path="/maps/:mapsid" element={<ShowMaps />} />
               <Route path="*" element={<Error />} />
             </Route>
-          </Routes>
+          </Routes>
         </BrowserRouter>
       </div>
     );
