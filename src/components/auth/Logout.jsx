@@ -1,23 +1,25 @@
 // Logout.js
-import React from 'react';
-import { useNavigate  } from 'react-router-dom';
-import { logout } from '../services/authService';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
-  const history = useNavigate ();
+  const navigate = useNavigate();
+  const handleLogout = async() => {
+    // Clear tokens from local storage to logout the user
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
 
-  const handleLogout = () => {
-    logout();
-    // Redirect to the login page after logout
-    history('/login');
+    // Perform any additional actions after logout
+    // e.g., navigate to the login page
+    console.log('logout')
+    navigate("/");
+
   };
 
   return (
     <div>
       <h2>Logout</h2>
-      <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors">
-        Logout
-      </button>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };

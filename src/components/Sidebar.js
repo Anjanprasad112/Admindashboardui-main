@@ -1,8 +1,11 @@
 import React from 'react'
 import { FaTachometerAlt, FaRegSun, FaWrench, FaStickyNote, FaRegChartBar, FaRegCalendarAlt, FaChevronRight, FaChevronLeft, FaBolt,FaMapMarker ,FaUserAlt,FaFileAlt,FaUserPlus} from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "./auth/UserContext";
+
 
 const Sidebar = () => {
+    const { userName } = useUserContext();
     let navigate = useNavigate();
     const cases = () => {
         let pathtwo = `/cases`;
@@ -13,7 +16,7 @@ const Sidebar = () => {
         navigate(pathtwo);
     }
     const dashboard = () => {
-        let pathtwo = `/`;
+        let pathtwo = `/dashboard`;
         navigate(pathtwo);
     }
     const maps = () => {
@@ -43,7 +46,7 @@ const Sidebar = () => {
                 <p className='text-[14px] leading-[20px] font-bold text-white'>Dashboard</p>
             </div>
             <div className='pt-[15px] border-b-[1px] border-[#EDEDED]/[0.3]'>
-                <p className='text-[10px] font-extrabold leading-[16px] text-white/[0.4]'> INTERFACE</p>
+                {/* <p className='text-[10px] font-extrabold leading-[16px] text-white/[0.4]'> INTERFACE</p> */}
                 <div className='flex items-center justify-between gap-[10px] py-[15px] cursor-pointer'>
                     <div className='flex items-center gap-3' onClick={cases}>
                         <FaRegSun color='white' /> <p className='text-[14px] leading-[20px] font-normal text-white'>Cases </p>

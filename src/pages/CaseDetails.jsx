@@ -7,25 +7,41 @@ const CaseDetails = () => {
   const [dispatch, setDispatch] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [vehicle, setVehicle] = useState(null);
+  // const [vehicleid, setVehicleid] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/dispatch-entries/${dispatch_entry_id}/`);
-        // console.log(response.data)
         setDispatch(response.data);
+        const vehicleID = response.data.asset_id.vehicle_id;
+        getVehicle(vehicleID);
         setLoading(false);
       } catch (error) {
         setError(error);
         setLoading(false);
       }
     }
+    console.log(vehicle);
+    async function getVehicle(vehicleID) {
+      try {
+        const vehicleData = {
+          vehicle: vehicleID,
+        };
 
-    fetchData();
-  }, [dispatch_entry_id]);
-
-  console.log(dispatch);
-
+        const response = await axios.post('http://127.0.0.1:8000/vehicleID/', vehicleData);
+        setVehicle(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    }
+              fetchData();
+              // getVehicle();
+            }, [dispatch_entry_id]);
+            
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -35,7 +51,95 @@ const CaseDetails = () => {
   }
 
   return (
-    // <div>
+    <div className="bg-gray-100 min-h-screen py-10 text-center">
+        <div className='border-2 border-gray-400 p-4 mb-4'>
+      <div className="max-w-3xl mx-auto px-4">
+        <div className="text-center text-2xl font-semibold mb-4">CASE DETAILS</div>
+        <div className="text-center text-2xl font-semibold mb-4 border-2 p-4 border-gray-300">
+        <strong>Dispatch Entry ID:</strong> {dispatch.dispatch_entry_id}
+        </div>
+
+        <hr className="border-gray-400 mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Dispatch Entry Details */}
+          {/* <div className="border-2 border-gray-300 p-4 mb-4">
+            <div className="mb-4">
+              <strong>Dispatch Entry ID:</strong> {dispatch.dispatch_entry_id}
+            </div>
+          </div> */}
+
+          {/* Account Details */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+            <strong className="text-xl">Account Details :</strong>
+            <hr className="border-gray-400 mb-4" />
+            <div className="mb-2">Name : {dispatch.account_id.name}</div>
+            <div className="mb-2">Address : {dispatch.account_id.address}</div>
+            <div>Email: {dispatch.account_id.email}</div>
+          </div>
+
+          {/* Asset Details */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+          {vehicle && (
+            <>
+            <strong className="text-xl">Vehicle Details :</strong>
+            <hr className="border-gray-400 mb-4" />
+            
+            <div className="mb-2">Make : {vehicle.vehicle_make}</div>
+            <div className="mb-2">License Plate : {dispatch.asset_id.license_plate}</div>
+            <div className="mb-2">Class : {vehicle.vehicle_class}</div>
+            <div>Type: {vehicle.vehicle_type}</div>
+            </>
+        )}
+            
+          </div>
+
+          {/* Company Details */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+            <strong className="text-xl">Company Details :</strong>
+            <hr className="border-gray-400 mb-4" />
+            <div className="mb-2">Company ID : {dispatch.company_id.name}</div>
+            <div className="mb-2">Phone no. : {dispatch.company_id.phone}</div>
+            <div>Address: {dispatch.company_id.address}</div>
+          </div>
+
+          {/* Customer Details */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+            <strong className="text-xl">Customer Details :</strong>
+            <hr className="border-gray-400 mb-4" />
+            <div className="mb-2">Name : {dispatch.customer_id.name}</div>
+            <div className="mb-2">Email ID : {dispatch.customer_id.email}</div>
+            <div>Phone No.: {dispatch.customer_id.phone}</div>
+          </div>
+
+          {/* Reason Details */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+            <strong className="text-xl">Reason Details :</strong>
+            <hr className="border-gray-400 mb-4" />
+            <div>Reason : {dispatch.reason_id.name}</div>
+          </div>
+         
+
+          {/* Location */}
+          <div className="border-2 border-gray-300 p-4 mb-4">
+            <strong className="text-xl">Location :</strong>
+            <hr className="border-gray-400 mb-4" />
+            <div>Pickup Location: {dispatch.pickup_location}</div>
+          </div>
+         
+        </div>
+      </div>
+      </div>
+    </div>
+  );
+}
+
+export default CaseDetails;
+
+
+
+
+
+  // <div>
     //   <div className='text-center text-2xl'>Case Details</div>
 
     //   <div key={dispatch.dispatch_entry_id} className="border-2 border-gray-300 text-center">
@@ -91,81 +195,3 @@ const CaseDetails = () => {
     
     //   </div>
     // </div>
-    <div className="bg-gray-100 min-h-screen py-10">
-    <div className="max-w-3xl mx-auto px-4">
-      {loading ? (
-        <div className="text-center text-2xl font-semibold">Loading...</div>
-      ) : error ? (
-        <div className="text-center text-2xl font-semibold text-red-500">Error: {error.message}</div>
-      ) : (
-        <div>
-          <div className="text-center text-2xl font-semibold mb-4">Case Details</div>
-
-          <div className="border-2 border-gray-300 p-4">
-            {/* Account Details */}
-            <div className="mb-4">
-              <strong>Account Details:</strong>
-              <div>Account ID: {dispatch.account_id.account_id}</div>
-              <div>Name: {dispatch.account_id.name}</div>
-              <div>Create Date: {dispatch.account_id.create_date}</div>
-              <div>Address: {dispatch.account_id.address}</div>
-              <div>Email: {dispatch.account_id.email}</div>
-            </div>
-
-            {/* Asset Details */}
-            <div className="mb-4">
-              <strong>Asset Details:</strong>
-              <div>Asset ID: {dispatch.asset_id.asset_id}</div>
-              <div>License Plate: {dispatch.asset_id.license_plate}</div>
-              <div>Create Date: {dispatch.asset_id.create_date}</div>
-              <div>Customer ID: {dispatch.asset_id.customer_id}</div>
-              <div>Vehicle ID: {dispatch.asset_id.vehicle_id}</div>
-            </div>
-
-            {/* Case Details */}
-            <div className="mb-4">
-              <strong>Case Details:</strong>
-              <div>Case ID: {dispatch.case_id.case_id}</div>
-              <div>Dispatch Entry ID: {dispatch.case_id.dispatch_entry_id}</div>
-              <div>CSR ID: {dispatch.case_id.csr_id}</div>
-            </div>
-
-            {/* Company Details */}
-            <div className="mb-4">
-              <strong>Company Details:</strong>
-              <div>Company ID: {dispatch.company_id.company_id}</div>
-              <div>Address : {dispatch.company_id.address}</div>
-              <div>Type :{dispatch.company_id.company_type}</div>
-            </div>
-
-            {/* Customer Details */}
-            <div className="mb-4">
-              <strong>Customer Details:</strong>
-              <div>Customer ID : {dispatch.customer_id.customer_id}</div>
-              <div>Name : {dispatch.customer_id.name}</div>
-              <div>Email ID : {dispatch.customer_id.email}</div>
-              <div>Phone No. :{dispatch.customer_id.phone}</div>
-            </div>
-
-            {/* Reason Details */}
-            <div className="mb-4">
-              <strong>Reason Details:</strong>
-              <div>Reason ID : {dispatch.reason_id.reason_id}</div>
-              <div>Reason : {dispatch.reason_id.name}</div>
-            </div>
-
-            {/* Location */}
-            <div>
-              <strong>Location :</strong>
-              <div>Pickup Location : {dispatch.pickup_location}</div>
-              <div>Drop-off Location : {dispatch.dropoff_location}</div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  </div>
-  );
-}
-
-export default CaseDetails;
