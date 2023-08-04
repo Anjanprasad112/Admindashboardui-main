@@ -8,6 +8,7 @@ const CaseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [vehicle, setVehicle] = useState(null);
+  const [nearbyDrivers, setNearbyDrivers] = useState([]);
   // const [vehicleid, setVehicleid] = useState(null);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const CaseDetails = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/dispatch-entries/${dispatch_entry_id}/`);
         setDispatch(response.data);
+        console.log(response.data)
         const vehicleID = response.data.asset_id.vehicle_id;
         getVehicle(vehicleID);
         setLoading(false);
@@ -41,7 +43,25 @@ const CaseDetails = () => {
               fetchData();
               // getVehicle();
             }, [dispatch_entry_id]);
+            console.log(dispatch)
+            useEffect(() => {
+              if (dispatch.latitude && dispatch.longitude) {
+                async function fetchNearbyDrivers() {
+                  try {
+                    const response = await axios.get(
+                      `http://127.0.0.1:8000/drivers/nearby/?pickup_latitude=${dispatch.latitude}&pickup_longitude=${dispatch.longitude}`
+                    );
+                    setNearbyDrivers(response.data);
+                  } catch (error) {
+                    console.error("Error fetching nearby drivers:", error);
+                  }
+                }
+          
+                fetchNearbyDrivers();
+              }
+            }, [dispatch.latitude, dispatch.longitude]);
             
+            console.log(nearbyDrivers)
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -125,8 +145,24 @@ const CaseDetails = () => {
             <hr className="border-gray-400 mb-4" />
             <div>Pickup Location: {dispatch.pickup_location}</div>
           </div>
+
+          
          
         </div>
+        <div className="border-2 border-gray-300 p-4 mb-4">
+          <strong className="text-xl">Nearby Drivers :</strong>
+          <hr className="border-gray-400 mb-4" />
+          <div className="h-48 overflow-y-auto">
+            {nearbyDrivers.map((driver) => (
+              <div key={driver.id} className="p-4 border border-gray-300 mb-2">
+                <div className="text-xl font-semibold">{driver.name}</div>
+                <div>{driver.email}</div>
+                <div>{driver.phone}</div>
+                {/* Add other driver details as needed */}
+              </div>
+            ))}
+          </div>
+          </div>
       </div>
       </div>
     </div>
